@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCEND — Knowledge That Builds</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,900;1,700&family=Barlow:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --off-black: #111111;
+    --dark: #1a1a1a;
+    --mid: #2e2e2e;
+    --grey: #888888;
+    --light-grey: #c8c8c8;
+    --white: #f5f5f5;
+    --pure-white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+
+  .logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--pure-white);
+  }
+
+  .nav-line {
+    flex: 1;
+    height: 1px;
+    background: var(--mid);
+    margin: 0 40px;
+  }
+
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    border: 1px solid var(--mid);
+    padding: 10px 24px;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .nav-cta:hover { border-color: var(--white); color: var(--pure-white); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 60px 80px;
+    gap: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-text { position: relative; z-index: 2; }
+
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--grey);
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 8vw, 110px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--pure-white);
+    margin-bottom: 32px;
+  }
+
+  h1 .italic-line {
+    font-style: italic;
+    color: var(--light-grey);
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--grey);
+    max-width: 380px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--pure-white);
+    text-decoration: none;
+    padding: 16px 40px;
+    display: inline-block;
+    transition: background 0.3s, color 0.3s;
+  }
+  .btn-primary:hover { background: var(--light-grey); }
+
+  .scroll-hint {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scroll-hint::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 36px;
+    background: var(--grey);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* ─── 3D CIRCLE ANIMATION ─── */
+  .hero-visual {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 520px;
+  }
+
+  .orbit-container {
+    position: relative;
+    width: 420px;
+    height: 420px;
+  }
+
+  canvas#orbitCanvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .center-label span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pure-white);
+    display: block;
+  }
+
+  .center-label .price-label {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--grey);
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+  }
+
+  /* ─── WORDS STRIP ─── */
+  .marquee-section {
+    border-top: 1px solid var(--mid);
+    border-bottom: 1px solid var(--mid);
+    overflow: hidden;
+    padding: 20px 0;
+    background: var(--off-black);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: marqueeScroll 28s linear infinite;
+  }
+
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .marquee-item::after {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--mid);
+    border-radius: 50%;
+  }
+
+  /* ─── MANIFESTO ─── */
+  .manifesto {
+    padding: 140px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--grey);
+    padding-top: 8px;
+    position: relative;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--grey);
+    margin-bottom: 16px;
+  }
+
+  .manifesto-text h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--pure-white);
+    margin-bottom: 32px;
+  }
+
+  .manifesto-text h2 em {
+    font-style: italic;
+    color: var(--light-grey);
+  }
+
+  .manifesto-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--grey);
+    line-height: 1.9;
+    max-width: 520px;
+  }
+
+  .manifesto-body p + p { margin-top: 20px; }
+
+  /* ─── STAT ROW ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .stat-cell {
+    padding: 60px;
+    border-right: 1px solid var(--mid);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-cell:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--pure-white);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .stat-bg-letter {
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 160px;
+    color: var(--off-black);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ─── PRODUCTS ─── */
+  .products-section {
+    padding: 140px 60px;
+  }
+
+  .products-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 80px;
+    border-bottom: 1px solid var(--mid);
+    padding-bottom: 40px;
+  }
+
+  .products-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 80px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--pure-white);
+  }
+
+  .products-header h2 span {
+    font-style: italic;
+    color: var(--light-grey);
+  }
+
+  .products-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--mid);
+  }
+
+  .product-card {
+    background: var(--black);
+    padding: 60px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .product-card:hover { background: var(--off-black); }
+
+  .product-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 120px;
+    line-height: 1;
+    color: var(--dark);
+    margin-bottom: -20px;
+    margin-left: -8px;
+    user-select: none;
+    transition: color 0.4s;
+  }
+  .product-card:hover .product-number { color: var(--mid); }
+
+  .product-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .product-tag::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--grey);
+  }
+
+  .product-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 3vw, 42px);
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--pure-white);
+    margin-bottom: 24px;
+    flex: 1;
+  }
+
+  .product-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--grey);
+    line-height: 1.7;
+    margin-bottom: 48px;
+    max-width: 400px;
+  }
+
+  .product-includes {
+    margin-bottom: 48px;
+  }
+
+  .includes-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 16px;
+  }
+
+  .include-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    color: var(--light-grey);
+    padding: 10px 0;
+    border-top: 1px solid var(--dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .include-item::after {
+    content: '→';
+    color: var(--mid);
+    font-size: 12px;
+  }
+
+  .product-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-top: 40px;
+    border-top: 1px solid var(--dark);
+  }
+
+  .product-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    color: var(--pure-white);
+    line-height: 1;
+  }
+
+  .product-price sup {
+    font-size: 24px;
+    vertical-align: super;
+    font-weight: 400;
+  }
+
+  .btn-buy {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--pure-white);
+    text-decoration: none;
+    padding: 16px 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+    border-radius: 999px;
+    transition: background 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-buy:hover { background: var(--light-grey); transform: translateY(-2px); }
+
+  /* ─── MOTIVATION BLOCK ─── */
+  .motivation {
+    padding: 160px 60px;
+    border-top: 1px solid var(--mid);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .motivation-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 320px;
+    color: var(--off-black);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .motivation blockquote {
+    position: relative;
+    z-index: 2;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--pure-white);
+    max-width: 900px;
+    margin: 0 auto 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .motivation blockquote em {
+    font-style: italic;
+    color: var(--light-grey);
+  }
+
+  .motivation cite {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--grey);
+    font-style: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--mid);
+    padding: 48px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .footer-note {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-line { display: none; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+    .hero-text { order: 2; }
+    .hero-visual { order: 1; height: 320px; }
+    .orbit-container { width: 300px; height: 300px; }
+    .eyebrow { justify-content: center; }
+    .hero-sub { margin: 0 auto 40px; }
+    .hero-actions { justify-content: center; flex-wrap: wrap; }
+
+    .manifesto { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+    .stats-row { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--mid); padding: 40px 24px; }
+
+    .products-section { padding: 80px 24px; }
+    .products-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .product-card { padding: 40px 24px; }
+
+    .motivation { padding: 100px 24px; }
+    .motivation-bg { font-size: 140px; }
+
+    footer { flex-direction: column; gap: 24px; padding: 40px 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Ascend</div>
+  <div class="nav-line"></div>
+  <a href="#products" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Knowledge. Execution. Freedom.</p>
+    <h1>Build <br><span class="italic-line">Your</span><br>Future.</h1>
+    <p class="hero-sub">Two blueprints. No fluff. Real steps toward financial independence — starting with income, ending with assets.</p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">See The Guides</a>
+      <span class="scroll-hint">Scroll Down</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="orbit-container">
+      <canvas id="orbitCanvas" width="420" height="420"></canvas>
+      <div class="center-label">
+        <span>Ascend</span>
+        <span class="price-label">$59.99 Each</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="section-label">The Philosophy</div>
+  <div class="manifesto-text">
+    <h2>Progress Demands <em>Action,</em> Not Permission.</h2>
+    <div class="manifesto-body">
+      <p>Most people wait for the right moment. They study the theory without ever beginning. They admire the result without understanding the path.</p>
+      <p>These guides exist for those who are ready to stop watching and start moving. Every chapter is a step. Every step is a decision. The decision is yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-cell">
+    <span class="stat-number">2</span>
+    <span class="stat-desc">Comprehensive Guides</span>
+    <span class="stat-bg-letter">2</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-number">$0</span>
+    <span class="stat-desc">Required Prior Experience</span>
+    <span class="stat-bg-letter">0</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-number">1</span>
+    <span class="stat-desc">Decision Between You and Change</span>
+    <span class="stat-bg-letter">1</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="products-header">
+    <h2>The<br><span>Guides</span></h2>
+    <span class="products-count">02 Titles Available</span>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- PRODUCT 1 -->
+    <div class="product-card">
+      <div class="product-number">01</div>
+      <div class="product-tag">Digital Guide — E-Commerce</div>
+      <h3 class="product-title">How To Dropship<br>For Beginners</h3>
+      <p class="product-desc">A step-by-step breakdown of building a dropshipping operation from nothing. No warehouse. No inventory. No excuses. Learn how to pick products, set up your store, run ads, and process your first sale.</p>
+      <div class="product-includes">
+        <div class="includes-label">What's Inside</div>
+        <div class="include-item">Finding Winning Products</div>
+        <div class="include-item">Store Setup & Branding</div>
+        <div class="include-item">Supplier Sourcing</div>
+        <div class="include-item">Running Paid Ads</div>
+        <div class="include-item">Scaling Your First Store</div>
+      </div>
+      <div class="product-footer">
+        <div class="product-price"><sup>$</sup>59.99</div>
+        <!-- PRODUCT 1 PAYMENT LINK — replace # with your payment gateway URL -->
+        <a href="#" class="btn-buy">Start Now</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="product-card">
+      <div class="product-number">02</div>
+      <div class="product-tag">Digital Guide — Young Adults</div>
+      <h3 class="product-title">How To Make Money<br>As A Young Adult</h3>
+      <p class="product-desc">A straight-talking guide to building real income from a young age — before the world tells you what's possible. Side hustles, skills, investing basics, and the mindset shifts that separate those who build from those who wait.</p>
+      <div class="product-includes">
+        <div class="includes-label">What's Inside</div>
+        <div class="include-item">High-Income Skills to Learn Now</div>
+        <div class="include-item">Side Hustles That Actually Pay</div>
+        <div class="include-item">Investing Your First $100</div>
+        <div class="include-item">Building Income Streams Early</div>
+        <div class="include-item">The Money Mindset Shift</div>
+      </div>
+      <div class="product-footer">
+        <div class="product-price"><sup>$</sup>59.99</div>
+        <!-- PRODUCT 2 PAYMENT LINK — replace # with your payment gateway URL -->
+        <a href="#" class="btn-buy">Start Now</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MOTIVATION -->
+<section class="motivation">
+  <div class="motivation-bg" aria-hidden="true">MOVE</div>
+  <blockquote>
+    "The cost of doing<br>nothing is always <em>higher</em><br>than the cost of starting."
+  </blockquote>
+  <cite>— Ascend Philosophy</cite>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ascend</div>
+  <div class="footer-note">© 2026 — Knowledge That Builds</div>
+  <div class="footer-links">
+    <a href="#">Contact</a>
+    <a href="#">Refund Policy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ─── MARQUEE BUILD ───
+const words = ['Execute', 'No Excuses', 'Build Now', 'Move Forward', 'Own Your Path', 'Start Today', 'Stay Disciplined', 'Think Long Term', 'Act First', 'Stay Relentless'];
+const track = document.getElementById('marqueeTrack');
+const doubled = [...words, ...words];
+doubled.forEach(w => {
+  const el = document.createElement('div');
+  el.className = 'marquee-item';
+  el.textContent = w;
+  track.appendChild(el);
+});
+
+// ─── 3D ORBIT ANIMATION ───
+const canvas = document.getElementById('orbitCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width;
+const H = canvas.height;
+const cx = W / 2;
+const cy = H / 2;
+
+const rings = [
+  { radiusX: 170, radiusY: 52, tilt: 0,    speed: 0.008, dotCount: 28, dotSize: 2.2 },
+  { radiusX: 140, radiusY: 70, tilt: 55,   speed: -0.011, dotCount: 22, dotSize: 2.0 },
+  { radiusX: 155, radiusY: 44, tilt: -35,  speed: 0.014, dotCount: 18, dotSize: 1.6 },
+  { radiusX: 110, radiusY: 80, tilt: 80,   speed: -0.007, dotCount: 32, dotSize: 1.4 },
+];
+
+let t = 0;
+
+function project(angle, ring) {
+  const tiltRad = (ring.tilt * Math.PI) / 180;
+  const x = ring.radiusX * Math.cos(angle);
+  const y = ring.radiusY * Math.sin(angle);
+  const xp = x * Math.cos(tiltRad) - y * Math.sin(tiltRad) * 0.4;
+  const yp = x * Math.sin(tiltRad) * 0.3 + y * Math.cos(tiltRad);
+  return { x: cx + xp, y: cy + yp, z: x * Math.sin(tiltRad) + y * 0.5 };
+}
+
+function drawRing(ring, time) {
+  const points = [];
+  const segments = 200;
+  for (let i = 0; i <= segments; i++) {
+    const a = (i / segments) * Math.PI * 2;
+    points.push(project(a, ring));
+  }
+
+  // Draw ring path
+  ctx.beginPath();
+  points.forEach((p, i) => {
+    const depth = (p.z + 200) / 400;
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  });
+  ctx.closePath();
+  const ringGrad = ctx.createLinearGradient(cx - ring.radiusX, cy, cx + ring.radiusX, cy);
+  ringGrad.addColorStop(0, 'rgba(255,255,255,0.05)');
+  ringGrad.addColorStop(0.5, 'rgba(255,255,255,0.18)');
+  ringGrad.addColorStop(1, 'rgba(255,255,255,0.05)');
+  ctx.strokeStyle = ringGrad;
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+
+  // Draw dots
+  for (let d = 0; d < ring.dotCount; d++) {
+    const a = (d / ring.dotCount) * Math.PI * 2 + time * ring.speed * 60;
+    const p = project(a, ring);
+    const depth = (p.z + 200) / 400;
+    const alpha = 0.15 + depth * 0.85;
+    const sz = ring.dotSize * (0.5 + depth * 0.8);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(2)})`;
+    ctx.fill();
+  }
+}
+
+function drawCore() {
+  // Outer glow
+  const glowGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80);
+  glowGrad.addColorStop(0, 'rgba(255,255,255,0.04)');
+  glowGrad.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, 80, 0, Math.PI * 2);
+  ctx.fillStyle = glowGrad;
+  ctx.fill();
+
+  // Inner sphere
+  const sphereGrad = ctx.createRadialGradient(cx - 10, cy - 10, 2, cx, cy, 32);
+  sphereGrad.addColorStop(0, 'rgba(255,255,255,0.25)');
+  sphereGrad.addColorStop(0.5, 'rgba(180,180,180,0.1)');
+  sphereGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, 32, 0, Math.PI * 2);
+  ctx.fillStyle = sphereGrad;
+  ctx.fill();
+
+  // Core ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+}
+
+function animate(timestamp) {
+  ctx.clearRect(0, 0, W, H);
+  t = timestamp / 1000;
+
+  // Sort rings by z to draw far rings first (basic depth sort with tilt angle)
+  const sorted = [...rings].sort((a, b) => a.tilt - b.tilt);
+  sorted.slice(0, 2).forEach(r => drawRing(r, t));
+  drawCore();
+  sorted.slice(2).forEach(r => drawRing(r, t));
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+
+// ─── BUY HANDLER ───
+function handleBuy(product) {
+  alert(`You selected: "${product}"\n\nThis would redirect to a payment page.\nPrice: $59.99`);
+}
+</script>
+</body>
+</html>
