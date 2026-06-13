@@ -648,6 +648,135 @@
   }
   .footer-links a:hover { color: var(--white); }
 
+  /* ─── EYE INTRO OVERLAY ─── */
+  #eye-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    animation: overlayFog 2.2s cubic-bezier(0.4, 0, 0.6, 1) 2.4s forwards;
+  }
+
+  @keyframes overlayFog {
+    0%   { opacity: 1; }
+    25%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes eyeWrapFog {
+    0%   { opacity: 1; filter: blur(0px); transform: scale(1); }
+    30%  { opacity: 0.7; filter: blur(6px); transform: scale(0.97); }
+    100% { opacity: 0; filter: blur(28px); transform: scale(0.88); }
+  }
+
+  .eye-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: eyeWrapFog 2.2s cubic-bezier(0.4, 0, 0.6, 1) 2.4s forwards;
+  }
+
+  .eye {
+    width: 120px;
+    height: 54px;
+    position: relative;
+  }
+
+  .eye-outer {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255,255,255,0.8);
+    border-radius: 50%;
+    position: absolute;
+    top: 0; left: 0;
+    box-shadow: 0 0 30px rgba(255,255,255,0.1);
+  }
+
+  .eye-pupil {
+    width: 28px;
+    height: 28px;
+    background: var(--pure-white);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: eyeTrack 2.4s ease forwards;
+  }
+
+  .eye-pupil::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: var(--black);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @keyframes eyeTrack {
+    0%   { transform: translate(-50%, -50%); }
+    15%  { transform: translate(-50%, -50%); }
+    35%  { transform: translate(calc(-50% - 32px), -50%); }
+    55%  { transform: translate(calc(-50% - 32px), -50%); }
+    75%  { transform: translate(calc(-50% + 32px), -50%); }
+    90%  { transform: translate(calc(-50% + 32px), -50%); }
+    100% { transform: translate(-50%, -50%); }
+  }
+
+  .eye-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--grey);
+    animation: labelPulse 2.4s ease forwards;
+  }
+
+  @keyframes labelPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ─── SCROLL REVEAL SYSTEM ─── */
+
+  /* Default hidden state for scroll elements */
+  [data-scroll] {
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 0.75s;
+    will-change: opacity, transform;
+  }
+
+  /* Directions when hidden (scrolled past) */
+  [data-scroll="up"]       { opacity: 0; transform: translateY(-60px); }
+  [data-scroll="down"]     { opacity: 0; transform: translateY(60px); }
+  [data-scroll="left"]     { opacity: 0; transform: translateX(-60px); }
+  [data-scroll="right"]    { opacity: 0; transform: translateX(60px); }
+  [data-scroll="fade"]     { opacity: 0; }
+  [data-scroll="scale"]    { opacity: 0; transform: scale(0.88); }
+
+  /* Visible state */
+  [data-scroll].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Stagger delays via data-delay */
+  [data-delay="1"] { transition-delay: 0.1s; }
+  [data-delay="2"] { transition-delay: 0.2s; }
+  [data-delay="3"] { transition-delay: 0.3s; }
+  [data-delay="4"] { transition-delay: 0.4s; }
+  [data-delay="5"] { transition-delay: 0.5s; }
+  [data-delay="6"] { transition-delay: 0.6s; }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 900px) {
     nav { padding: 20px 24px; }
@@ -684,6 +813,17 @@
 </head>
 <body>
 
+<!-- EYE INTRO -->
+<div id="eye-overlay">
+  <div class="eye-wrap">
+    <div class="eye">
+      <div class="eye-outer"></div>
+      <div class="eye-pupil"></div>
+    </div>
+    <span class="eye-label">Ascend</span>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="logo">Ascend</div>
@@ -694,16 +834,16 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-text">
-    <p class="eyebrow">Knowledge. Execution. Freedom.</p>
-    <h1>Build <br><span class="italic-line">Your</span><br>Future.</h1>
-    <p class="hero-sub">Two blueprints. No fluff. Real steps toward financial independence — starting with income, ending with assets.</p>
-    <div class="hero-actions">
+    <p class="eyebrow" data-scroll="left" data-delay="1">Knowledge. Execution. Freedom.</p>
+    <h1 data-scroll="left" data-delay="2">Build <br><span class="italic-line">Your</span><br>Future.</h1>
+    <p class="hero-sub" data-scroll="left" data-delay="3">Two blueprints. No fluff. Real steps toward financial independence — starting with income, ending with assets.</p>
+    <div class="hero-actions" data-scroll="left" data-delay="4">
       <a href="#products" class="btn-primary">See The Guides</a>
       <span class="scroll-hint">Scroll Down</span>
     </div>
   </div>
 
-  <div class="hero-visual">
+  <div class="hero-visual" data-scroll="right" data-delay="2">
     <div class="orbit-container">
       <canvas id="orbitCanvas" width="420" height="420"></canvas>
       <div class="center-label">
@@ -721,10 +861,10 @@
 
 <!-- MANIFESTO -->
 <section class="manifesto">
-  <div class="section-label">The Philosophy</div>
+  <div class="section-label" data-scroll="left">The Philosophy</div>
   <div class="manifesto-text">
-    <h2>Progress Demands <em>Action,</em> Not Permission.</h2>
-    <div class="manifesto-body">
+    <h2 data-scroll="up" data-delay="2">Progress Demands <em>Action,</em> Not Permission.</h2>
+    <div class="manifesto-body" data-scroll="up" data-delay="3">
       <p>Most people wait for the right moment. They study the theory without ever beginning. They admire the result without understanding the path.</p>
       <p>These guides exist for those who are ready to stop watching and start moving. Every chapter is a step. Every step is a decision. The decision is yours.</p>
     </div>
@@ -733,17 +873,17 @@
 
 <!-- STATS -->
 <div class="stats-row">
-  <div class="stat-cell">
+  <div class="stat-cell" data-scroll="up" data-delay="1">
     <span class="stat-number">2</span>
     <span class="stat-desc">Comprehensive Guides</span>
     <span class="stat-bg-letter">2</span>
   </div>
-  <div class="stat-cell">
+  <div class="stat-cell" data-scroll="up" data-delay="3">
     <span class="stat-number">$0</span>
     <span class="stat-desc">Required Prior Experience</span>
     <span class="stat-bg-letter">0</span>
   </div>
-  <div class="stat-cell">
+  <div class="stat-cell" data-scroll="up" data-delay="5">
     <span class="stat-number">1</span>
     <span class="stat-desc">Decision Between You and Change</span>
     <span class="stat-bg-letter">1</span>
@@ -752,7 +892,7 @@
 
 <!-- PRODUCTS -->
 <section class="products-section" id="products">
-  <div class="products-header">
+  <div class="products-header" data-scroll="up">
     <h2>The<br><span>Guides</span></h2>
     <span class="products-count">02 Titles Available</span>
   </div>
@@ -760,7 +900,7 @@
   <div class="products-grid">
 
     <!-- PRODUCT 1 -->
-    <div class="product-card">
+    <div class="product-card" data-scroll="left" data-delay="2">
       <div class="product-number">01</div>
       <div class="product-tag">Digital Guide — E-Commerce</div>
       <h3 class="product-title">How To Dropship<br>For Beginners</h3>
@@ -781,7 +921,7 @@
     </div>
 
     <!-- PRODUCT 2 -->
-    <div class="product-card">
+    <div class="product-card" data-scroll="right" data-delay="2">
       <div class="product-number">02</div>
       <div class="product-tag">Digital Guide — Young Adults</div>
       <h3 class="product-title">How To Make Money<br>As A Young Adult</h3>
@@ -806,17 +946,17 @@
 
 <!-- MOTIVATION -->
 <section class="motivation">
-  <div class="motivation-bg" aria-hidden="true">MOVE</div>
-  <blockquote>
+  <div class="motivation-bg" aria-hidden="true" data-scroll="scale">MOVE</div>
+  <blockquote data-scroll="up" data-delay="2">
     "The cost of doing<br>nothing is always <em>higher</em><br>than the cost of starting."
   </blockquote>
-  <cite>— Ascend Philosophy</cite>
+  <cite data-scroll="up" data-delay="4">— Ascend Philosophy</cite>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Ascend</div>
-  <div class="footer-note">© 2026 — Knowledge That Builds</div>
+  <div class="footer-logo" data-scroll="up" data-delay="1">Ascend</div>
+  <div class="footer-note" data-scroll="up" data-delay="2">© 2026 — Knowledge That Builds</div>
 
 </footer>
 
@@ -943,6 +1083,92 @@ requestAnimationFrame(animate);
 function handleBuy(product) {
   alert(`You selected: "${product}"\n\nThis would redirect to a payment page.\nPrice: $29.99`);
 }
+
+// ─── EYE OVERLAY: remove from DOM after animation ───
+const eyeOverlay = document.getElementById('eye-overlay');
+// Remove from DOM after the fog fade finishes (2.4s delay + 2.2s duration)
+setTimeout(() => eyeOverlay.remove(), (2.4 + 2.2) * 1000);
+
+// ─── SCROLL REVEAL ───
+(function() {
+  const scrollEls = document.querySelectorAll('[data-scroll]');
+
+  // Track which elements were "above the fold" when they hid,
+  // so we can send them up vs down correctly.
+  const elMeta = new Map();
+
+  scrollEls.forEach(el => {
+    elMeta.set(el, { lastVisible: false, lastRect: null });
+  });
+
+  function getViewport() {
+    return { top: window.scrollY, bottom: window.scrollY + window.innerHeight };
+  }
+
+  function update() {
+    const vp = getViewport();
+
+    scrollEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const elTop = rect.top + window.scrollY;
+      const elBottom = rect.bottom + window.scrollY;
+      const inView = rect.top < window.innerHeight * 0.88 && rect.bottom > window.innerHeight * 0.12;
+      const meta = elMeta.get(el);
+      const dir = el.dataset.scroll;
+
+      if (inView) {
+        // Element is in viewport — show it
+        el.classList.add('is-visible');
+        meta.lastVisible = true;
+      } else {
+        // Element is out of viewport — hide it
+        if (el.classList.contains('is-visible')) {
+          // Was visible, now scrolled past — remove class so transition plays
+          el.classList.remove('is-visible');
+        }
+        // Direction-specific: override transform depending on whether
+        // element is above or below current viewport
+        const isAbove = rect.bottom < window.innerHeight * 0.12;
+        if (dir === 'up') {
+          el.style.transform = isAbove ? 'translateY(-60px)' : 'translateY(60px)';
+        } else if (dir === 'down') {
+          el.style.transform = isAbove ? 'translateY(-60px)' : 'translateY(60px)';
+        } else if (dir === 'left') {
+          el.style.transform = isAbove ? 'translateX(-60px)' : 'translateX(60px)';
+        } else if (dir === 'right') {
+          el.style.transform = isAbove ? 'translateX(60px)' : 'translateX(-60px)';
+        } else if (dir === 'scale') {
+          el.style.transform = 'scale(0.88)';
+        }
+        el.style.opacity = '0';
+        meta.lastVisible = false;
+      }
+    });
+  }
+
+  // Initial pass — run after a short delay to let page paint
+  // Hero elements start visible on load
+  scrollEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight * 0.88 && rect.bottom > window.innerHeight * 0.12;
+    if (inView) {
+      // Delay initial reveal slightly for polish
+      const delay = parseFloat(el.dataset.delay || 0) * 100;
+      setTimeout(() => el.classList.add('is-visible'), 300 + delay);
+    }
+  });
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Run once on load for below-fold
+  window.addEventListener('load', update);
+})();
 </script>
 </body>
 </html>
